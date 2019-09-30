@@ -3,6 +3,7 @@ name: buildx-publish
 on:
   pull_request:
     branches: master
+    types: [closed]
 
 jobs:
   buildx:
@@ -12,6 +13,8 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v1
+        with:
+          ref: master
       -
         name: Set up Docker Buildx
         id: buildx
