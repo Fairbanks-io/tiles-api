@@ -1,0 +1,36 @@
+name: buildx-publish
+
+on:
+  pull_request:
+    branches: master
+    types: [closed]
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+    
+      -
+        name: Checkout
+        uses: actions/checkout@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@master
+        with:
+          version: latest
+      -
+        name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      -
+        name: Run Buildx
+        env: # Or as an environment variable
+          DOCKER_USER: ${{ secrets.DOCKER_HUB_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_HUB_PASS }}
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            --output "type=image,push=true" \
+            . \
+            -t bsord/tiles-api:latest
+            --push
