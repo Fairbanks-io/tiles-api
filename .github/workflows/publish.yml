@@ -1,4 +1,4 @@
-name: buildx-publish
+name: CrossPlatform - Publish
 
 on:
   pull_request:
@@ -32,8 +32,3 @@ jobs:
             . \
             -t fairbanksio/tiles-api:latest \
             --push
-      - 
-        name: Push Image
-        run: |
-          set -x
-          docker push fairbanksio/tiles-api:latest
